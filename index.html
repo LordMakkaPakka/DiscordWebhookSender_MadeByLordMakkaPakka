@@ -1,27 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
-  <title>Webhook Sender</title>
+  <meta charset="UTF-8" />
+  <title>Webhook Chat</title>
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    input, textarea, button {
+      background-color: #2c2c2c;
+      color: #ffffff;
+      border: 1px solid #444;
+      padding: 10px;
+      margin: 5px;
+      width: 300px;
+    }
+    button {
+      background-color: #3a3a3a;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #555;
+    }
+  </style>
 </head>
 <body>
-  <h2>Wyślij wiadomość do webhooka</h2>
-  <input type="text" id="msg" placeholder="Twoja wiadomość">
-  <button onclick="send()">Wyślij</button>
+  <h2>Webhook Chat (Dark Mode)</h2>
+  <input id="webhook" type="text" placeholder="Wklej link webhooka">
+  <textarea id="message" rows="4" placeholder="Wpisz wiadomość..."></textarea>
+  <button onclick="sendMessage()">Wyślij</button>
 
   <script>
-    async function send() {
-      const msg = document.getElementById("msg").value;
-      const webhookUrl = "https://discord.com/api/webhooks/1415044516691579071/bUOjwrVb_-a_JsHnHde-bCNPlnuakzwdZsSQ6HUCklUw3Z68UyIvTX5m47sYvyPOkoWs";
+    function sendMessage() {
+      const webhookURL = document.getElementById('webhook').value;
+      const content = document.getElementById('message').value;
 
-      await fetch(webhookUrl, {
+      if (!webhookURL || !content) {
+        alert("Wprowadź webhook i wiadomość.");
+        return;
+      } fetch(webhookURL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          content: msg
-        })
-      });
-      
-      alert("Wysłano!");
+        body: JSON.stringify({ content: content })
+      })
+      .then(res => {
+        if (res.ok) {
+          alert("Wysłano!");
+          document.getElementById('message').value = "";
+        } else {
+          alert("Błąd przy wysyłaniu.");
+        }
+      })
+      .catch(err => alert("Błąd: " + err));
     }
   </script>
 </body>
