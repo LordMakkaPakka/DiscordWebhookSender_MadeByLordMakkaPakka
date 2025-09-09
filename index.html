@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Webhook Sender</title>
+</head>
+<body>
+  <h2>Wyślij wiadomość do webhooka</h2>
+  <input type="text" id="msg" placeholder="Twoja wiadomość">
+  <button onclick="send()">Wyślij</button>
+
+  <script>
+    async function send() {
+      const msg = document.getElementById("msg").value;
+      const webhookUrl = "https://discord.com/api/webhooks/1415044516691579071/bUOjwrVb_-a_JsHnHde-bCNPlnuakzwdZsSQ6HUCklUw3Z68UyIvTX5m47sYvyPOkoWs";
+
+      await fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          content: msg
+        })
+      });
+      
+      alert("Wysłano!");
+    }
+  </script>
+</body>
+</html>
